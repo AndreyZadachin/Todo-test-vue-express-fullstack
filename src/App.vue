@@ -2,7 +2,7 @@
   <div id="app">
     <InputItem @add-item="addItem" />
     <TodoInProcess :db="db.length" />
-    <TodoList :todoLists="db" @remove-item="removeItem" />
+    <TodoList :todoLists="db" @removeItem="removeTodo" />
   </div>
 </template>
 
@@ -11,6 +11,9 @@
 import InputItem from '@/components/InputItem.vue';
 import TodoInProcess from '@/components/TodoInProcess.vue';
 import TodoList from '@/components/TodoList.vue';
+import axios from 'axios';
+
+const url = 'api/todos/';
 
 export default {
   name: 'App',
@@ -19,16 +22,11 @@ export default {
       db: [],
     };
   },
-  //Запрос с сервера
   mounted() {
-    fetch('https://vue-test-db-bd42b-default-rtdb.firebaseio.com/todo.json')
-      .then((response) => response.json())
-      .then((res) => {
-        this.db = res;
-      })
-      .catch((error) => {
-        console.log('Ошибка ' + error);
-      });
+    axios
+      .get(url)
+      .then((response) => (this.db = response.data))
+      .catch((error) => console.log(error));
   },
   //Регистрируем компоненты
   components: {
@@ -38,12 +36,27 @@ export default {
   },
   methods: {
     //Удаляем задачу по id
-    removeItem(id) {
-      this.db = this.db.filter((item) => item.id !== id);
+    removeTodo(id) {
+      this.db = this.db.filter((item) => item._id !== id);
+
+      axios
+        .delete(url + id)
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
     },
     //Добавляем новую задачу
     addItem(item) {
       this.db = [...this.db, item];
+
+      axios
+        .post(url, item)
+        .then((response) => console.log(response))
+        .catch((error) => console.log(error));
+
+      axios
+        .get(url)
+        .then((response) => (this.db = response.data))
+        .catch((error) => console.log(error));
     },
   },
 };

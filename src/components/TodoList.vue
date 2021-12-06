@@ -1,7 +1,7 @@
 <template>
   <div>
     <ul>
-      <TodoItem v-for="(item, index) in todoLists" :key="item.id" :index="index" :item="item" @remove-item="removeItem" />
+      <TodoItem v-for="(item, index) in todoLists" :key="item._id" :index="index" :item="item" @remove-item="removeItem" />
     </ul>
   </div>
 </template>

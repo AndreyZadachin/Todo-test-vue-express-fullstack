@@ -5,7 +5,7 @@
       <span class="bold">{{ index + 1 }}</span>
       {{ item.title }}
     </div>
-    <button @click="$emit('remove-item', item.id)">Удалить</button>
+    <button @click="$emit('remove-item', item._id)">Удалить</button>
   </li>
 </template>
 

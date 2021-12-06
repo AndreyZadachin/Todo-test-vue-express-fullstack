@@ -19,8 +19,6 @@ export default {
     addItem() {
       if (this.title.trim()) {
         const newItem = {
-          id: Math.random(),
-
           title: this.title,
           status: false,
         };
